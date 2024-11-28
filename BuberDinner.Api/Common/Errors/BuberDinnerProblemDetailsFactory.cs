@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using BuberDinner.Api.Common.Errors.Http;
+using BuberDinner.Api.Common.Http;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
