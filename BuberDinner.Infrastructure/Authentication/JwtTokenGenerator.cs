@@ -30,7 +30,6 @@ public class JwtTokenGenerator(
       new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
       new Claim(JwtRegisteredClaimNames.Email, user.Email),
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-      new Claim(JwtRegisteredClaimNames.Iat, dateTimeProvider.UtcNow.ToString(), ClaimValueTypes.Integer64)
     };
 
     var securityToken = new JwtSecurityToken(

@@ -17,9 +17,11 @@ var app = builder.Build();
     {
         app.MapOpenApi();
     }
-
+    
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.MapControllers();
     app.Run();
 }
