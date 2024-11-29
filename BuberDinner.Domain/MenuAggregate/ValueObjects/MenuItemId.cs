@@ -11,9 +11,9 @@ public sealed class MenuItemId : ValueObject
         Value = value;
     }
 
-    public static MenuItemId CreateUnique()
+    public static MenuItemId Create(Guid guid)
     {
-        return new MenuItemId(Guid.NewGuid());
+        return new MenuItemId(guid);
     }
 
     public override IEnumerable<object> GetEqualityComponents()

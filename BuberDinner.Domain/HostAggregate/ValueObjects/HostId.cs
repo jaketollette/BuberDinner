@@ -2,23 +2,23 @@
 
 namespace BuberDinner.Domain.HostAggregate.ValueObjects;
 
-public sealed class HostId : ValueObject
+public sealed class HostId : AggregateRootId<Guid>
 {
-    public string Value { get; }
+    public override Guid Value { get; protected set; }
 
-    private HostId(string value)
+    private HostId(Guid value)
     {
         Value = value;
     }
 
-    public static HostId Create(string hostId)
+    public static HostId Create(Guid hostId)
     {
         return new HostId(hostId);
     }
 
     public static HostId CreateUnique()
     {
-        return new HostId(Guid.NewGuid().ToString());
+        return new HostId(Guid.NewGuid());
     }
 
     public override IEnumerable<object> GetEqualityComponents()

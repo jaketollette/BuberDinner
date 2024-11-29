@@ -2,6 +2,7 @@
 using BuberDinner.Domain.HostAggregate.ValueObjects;
 using BuberDinner.Domain.MenuAggregate;
 using BuberDinner.Domain.MenuAggregate.Entities;
+using BuberDinner.Domain.Common.Errors;
 
 using ErrorOr;
 
@@ -15,9 +16,14 @@ public class CreateMenuCommandHandler(IMenuRepository menuRepository) : IRequest
     {
         await Task.CompletedTask;
 
+        if (!Guid.TryParse(request.HostId, out Guid hostId))
+        {
+            return Errors.Common.InvalidId;
+        }
+
         // Create menu
         var menu = Menu.Create(
-            hostId: HostId.Create(request.HostId),
+            hostId: HostId.Create(hostId),
             name: request.Name,
             description: request.Description,
             sections: request.Sections.ConvertAll(s => MenuSection.Create(

@@ -3,44 +3,43 @@ using BuberDinner.Domain.Common.ValueObjects;
 using BuberDinner.Domain.DinnerAggregate.ValueObjects;
 using BuberDinner.Domain.HostAggregate.ValueObjects;
 using BuberDinner.Domain.MenuAggregate.Entities;
+using BuberDinner.Domain.MenuAggregate.Events;
 using BuberDinner.Domain.MenuAggregate.ValueObjects;
 using BuberDinner.Domain.MenuReviewAggregate.ValueObjects;
 
 namespace BuberDinner.Domain.MenuAggregate;
 
-public sealed class Menu : AggregateRoot<MenuId>
+public sealed class Menu : AggregateRoot<MenuId, Guid>
 {
     private readonly List<MenuSection> _sections = [];
     private readonly List<DinnerId> _dinnerIds = [];
-    private readonly List<MenuReviewId> _reviewIds = [];
+    private readonly List<MenuReviewId> _menuReviewIds = [];
 
-    public string Name { get; }
-    public string Description { get; }
-    public AverageRating AverageRating { get; } = AverageRating.CreateNew(0, 0);
+    public string Name { get; private set; }
+    public string Description { get; private set; }
+    public AverageRating AverageRating { get; private set; } = null!;
 
     public IReadOnlyList<MenuSection> Sections => _sections.AsReadOnly();
 
-    public HostId HostId { get; }
+    public HostId HostId { get; private set; }
     public IReadOnlyList<DinnerId> DinnerIds => _dinnerIds.AsReadOnly();
-    public IReadOnlyList<MenuReviewId> MenuReviewIds => _reviewIds.AsReadOnly();
-    public DateTime CreatedDateTime { get; }
-    public DateTime UpdatedDateTime { get; }
+    public IReadOnlyList<MenuReviewId> MenuReviewIds => _menuReviewIds.AsReadOnly();
+    public DateTime CreatedDateTime { get; private set; }
+    public DateTime UpdatedDateTime { get; private set; }
 
     private Menu(
-        MenuId id,
+        MenuId menuId,
         string name,
         string description,
         HostId hostId,
         List<MenuSection> sections,
-        DateTime createdDateTime,
-        DateTime updatedDateTime)
-        : base(id)
+        AverageRating averageRating)
+        : base(menuId)
     {
         Name = name;
         Description = description;
         HostId = hostId;
-        CreatedDateTime = createdDateTime;
-        UpdatedDateTime = updatedDateTime;
+        AverageRating = averageRating;
         _sections = sections;
     }
 
@@ -50,13 +49,22 @@ public sealed class Menu : AggregateRoot<MenuId>
         HostId hostId,
         List<MenuSection> sections)
     {
-        return new Menu(
+        var menu = new Menu(
             MenuId.CreateUnique(),
             name,
             description,
             hostId,
-            sections,
-            DateTime.UtcNow,
-            DateTime.UtcNow);
+            sections ?? [],
+            AverageRating.CreateNew());
+
+        menu.AddDomainEvent(new MenuCreated(menu));
+
+        return menu;
     }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    private Menu()
+    {
+    }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 }
