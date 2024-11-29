@@ -1,0 +1,24 @@
+@host=https://localhost:7295
+@jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmN2E0YTYxMi0wYmIwLTRmMGUtODdlNi04N2VlNTk3NTAxMjgiLCJnaXZlbl9uYW1lIjoiSmFrZSIsImZhbWlseV9uYW1lIjoiVG9sbGV0dGUiLCJlbWFpbCI6Impha2V0b2xsZXR0ZUBnbWFpbC5jb20iLCJqdGkiOiI2YTljMzc1Mi00ZDFkLTQ3OGUtYmY3ZS00NzA1MTZhMjJlZTUiLCJleHAiOjE3MzI5MDQ3NjMsImlzcyI6IkJ1YmVyRGlubmVyIiwiYXVkIjoiQnViZXJEaW5uZXIifQ.Mdy354DR_yxLAaQOTYqL06NOHWGixht4hAEvKm42-O8
+@hostId=asdfs
+POST {{host}}/hosts/{{hostId}}/menus
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "name": "Yummy Menu",
+  "description": "A delicious menu",
+  "sections": [
+    {
+      "name": "Appetizers",
+      "description": "Start your meal off right",
+      "items": [
+        {
+          "name": "Cheese Sticks",
+          "description": "Fried cheese sticks"
+        }
+      ]
+    }
+  ]
+}
+###

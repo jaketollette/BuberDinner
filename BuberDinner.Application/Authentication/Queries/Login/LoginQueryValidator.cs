@@ -1,16 +1,15 @@
 ﻿using FluentValidation;
 
-namespace BuberDinner.Application.Authentication.Queries.Login
+namespace BuberDinner.Application.Authentication.Queries.Login;
+
+public class LoginQueryValidator : AbstractValidator<LoginQuery>
 {
-    public class LoginQueryValidator : AbstractValidator<LoginQuery>
+    public LoginQueryValidator()
     {
-        public LoginQueryValidator()
-        {
-            RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress();
-            RuleFor(x => x.Password)
-                .NotEmpty();
-        }
+        RuleFor(x => x.Email)
+            .NotEmpty()
+            .EmailAddress();
+        RuleFor(x => x.Password)
+            .NotEmpty();
     }
 }
